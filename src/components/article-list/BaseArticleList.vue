@@ -25,7 +25,9 @@
             </v-list-item>
         </v-list>
         <!-- button -->
-        <slot></slot>
+        <div class="text-center">
+            <slot></slot>
+        </div>
     </v-col>
     <v-col v-else>
         <base-error-alert :errorMessage="message">
