@@ -11,11 +11,19 @@ import ArticleSection from '../components/article-section/ArticleSection'
 import {
     mapActions
 } from 'vuex';
+import {
+    mapState
+} from 'vuex'
 
 export default {
     components: {
         FeaturedArticle,
         ArticleSection
+    },
+    computed: {
+        ...mapState('articles', {
+            sections: state => state.sections
+        })
     },
     methods: {
         ...mapActions('articles', [
@@ -24,8 +32,10 @@ export default {
         ])
     },
     created() {
-        // Fetch articles from the database with the limit of 3
-        this.fetchAllArticlesFromDB(3);
+        if (Object.keys(this.sections).length === 0) {
+            this.fetchAllArticlesFromDB(3);
+            console.log('fetched')
+        }
     }
 }
 </script>
