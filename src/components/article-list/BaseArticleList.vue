@@ -9,6 +9,7 @@
         sm="8"
         xs="12"
         v-if="sectionObj.section"
+        class="no-pad"
     >
         <v-list
             v-for="(article, i) in sectionObj.section.articles"
@@ -57,6 +58,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

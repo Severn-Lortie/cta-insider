@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .no-pad {
     padding: 0px;
   }
