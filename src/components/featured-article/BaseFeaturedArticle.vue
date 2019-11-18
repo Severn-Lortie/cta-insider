@@ -15,7 +15,8 @@
             align="center"
             justify="center">
             <v-col
-            class="display-3 font-weight-bold text-center white--text text-capitalize"
+            class="font-weight-bold text-center white--text text-capitalize"
+            :class="fontSize"
             cols="6"
             >
                 {{article.title}}
@@ -29,6 +30,15 @@
 export default {
     props: {
         articles: Array
+    },
+    computed: {
+        fontSize() {
+            if (this.$vuetify.breakpoint.xs) {
+                return 'display-1'
+            } else {
+                return 'display-3'
+            }
+        }
     }
 }
 </script>
