@@ -11,6 +11,8 @@
 <script>
 import {mapState} from 'vuex'
 import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
+import stringToKey from '../../util/stringToKey'
 import BaseArticleList from './BaseArticleList'
 import BaseArticleListLoadButton from './BaseArticleListLoadButton';
 
@@ -24,11 +26,11 @@ export default {
     },
     methods: {
         ...mapActions('articles', [
-            'fetchArticlesFromDBSection'
+            'fetchArticlesFromDBSection',
         ]),
         fetchNextArticles() {
             this.fetchArticlesFromDBSection({
-                section: this.section.name,
+                section: this.section.section.name,
                 limit: 3
             })
         }
@@ -37,12 +39,32 @@ export default {
         ...mapState('articles', {
             sections: state => state.sections
         }),
+        ...mapGetters('articles', [
+            'getAmountOfArticlesInSection'
+        ]),
         section() {
            return {
                section: this.sections[this.sectionPath],
                key: this.sectionPath
             };
         }
+    },
+    created() {
+        if (this.section.section) {
+            if (this.getAmountOfArticlesInSection(this.section.key) < 3) {
+                this.fetchArticlesFromDBSection({
+                    section: this.section.section.name,
+                    limit: 3
+                });
+            }
+        } else {
+            const sectionName = stringToKey.convertToName(this.sectionPath);
+            this.fetchArticlesFromDBSection({
+                section: sectionName,
+                limit: 3
+            });
+        }
+        
     }
 }
 </script>

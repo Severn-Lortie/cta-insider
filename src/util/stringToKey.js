@@ -13,4 +13,9 @@ const convertToKey = (string) => {
     return arr.join('');
 }
 
-export default convertToKey;
+const convertToName = (string) => {
+    return string.replace(/([A-Z])/g, ' $1')
+    .replace(/^./, function(str){ return str.toUpperCase();})
+}
+
+export default {convertToKey, convertToName};

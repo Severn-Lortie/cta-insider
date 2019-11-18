@@ -1,5 +1,5 @@
 import fb from '../../firebaseConfig';
-import convertToKey from '../../util/stringToKey';
+import stringToKey from '../../util/stringToKey';
 import Vue from 'vue' 
 
 export default {
@@ -8,8 +8,8 @@ export default {
         sections: {}
     },
     getters: {
-       getAmountOfArticlesInSection: (state) => (sectionKey) => {
-           return state.sections[sectionKey].length;
+       getAmountOfArticlesInSection: (state) => (section) => {
+           return state.sections[section].articles.length;
        }
     },
     mutations: {
@@ -17,7 +17,7 @@ export default {
 
             // convertToKey is a function from stringToKey. It converts:
             // 'Object Key' --> 'objectKey'
-            const sectionKey = convertToKey(articleInfo.sectionName);
+            const sectionKey = stringToKey.convertToKey(articleInfo.sectionName);
             const sectionPath = state.sections[sectionKey];
 
             // if the section does not exist add it and the article

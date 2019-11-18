@@ -13,23 +13,20 @@ export default {
     components: {
       ArticleList
     },
-    methods: {
+    computed: {
       ...mapGetters('articles', [
         'getAmountOfArticlesInSection'
-      ]),
+      ])
+    },
+    methods: {
       ...mapActions('articles', [
-        'fetchArticlesFromDBSection'
+        'fetchArticlesFromDBSection',
+        'fetchAllArticlesFromDB'
       ])
     },
     props: {
         sectionPath: String
-    }, 
-    created() {
-      if (this.getAmountOfArticlesInSection(this.sectionPath) < 3) {
-        this.fetchArticlesFromDBSection(this.sectionPath)
-      }
     }
-
 }
 </script>
 
