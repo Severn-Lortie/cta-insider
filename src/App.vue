@@ -26,7 +26,8 @@ export default {
   .no-pad {
     padding: 0px;
   }
-  body {
-    overflow-x: hidden;
-  }
+  html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
 </style>
