@@ -14,14 +14,16 @@ export default {
             sections: state => state.sections
         }),
         articles() {
-            let array = [];
-            for (let key in this.sections) {
-                let section = this.sections[key];
-                section.articles.forEach((article)=>{
-                    array.push(article);
-                });
+            // gather all the new stories (< 3) into an object
+            let allNewArticles = {};
+            for (let sectionKey in this.sections) {
+                let currentSection = this.sections[sectionKey];
+                for (let articleKey in currentSection.articles) {
+                    let currentArticle = currentSection.articles[articleKey];
+                    allNewArticles[articleKey] = currentArticle;
+                }
             }
-            return array;
+            return allNewArticles;
         }
     },
     components: {

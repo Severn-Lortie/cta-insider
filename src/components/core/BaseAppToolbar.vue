@@ -18,21 +18,28 @@
 
     <v-btn
         text
-        v-for="(section, key) in sections"
-        :key="key"
+        v-for="(id) in sections"
+        :key="id"
         replace
-        :to="`/section/${key}`"
+        :to="`/section/${id}`"
     >
-        {{section.name || key}}
+        {{formattedName(id)}}
     </v-btn>
 
 </v-app-bar>
 </template>
 
 <script>
+import stringToKey from '../../util/stringToKey'
+
 export default {
     props: {
-        sections: Object
+        sections: Array
+    },
+    methods: {
+        formattedName(id) {
+            return stringToKey.convertToName(id);
+        }
     }
 }
 </script>

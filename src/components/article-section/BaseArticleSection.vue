@@ -17,7 +17,7 @@
                 text--darken-4
                 text-capitalize
                 ">
-                    {{sectionObj.section.name || sectionObj.key}}
+                    {{formattedSectionName}}
                 </div>
             </v-col>
             <v-col cols="12">
@@ -26,8 +26,8 @@
                     justify="start"
                 >
                     <v-col
-                        v-for="(article, i) in sectionObj.section.articles"
-                        :key="i"
+                        v-for="(article, id) in section.articles"
+                        :key="id"
                         lg="4"
                         md="4"
                         sm="8"
@@ -35,8 +35,8 @@
                     >
                         <base-article-section-card
                             :article="article"
-                            :section="sectionObj.key"
-                            :articleNumberInSection="i"
+                            :articleId="id"
+                            :sectionId="sectionId"
                         >
                         </base-article-section-card>
                     </v-col>
@@ -48,15 +48,22 @@
 </template>
 
 <script>
-import BaseArticleSectionCard from './BaseArticleSectionCard'
+import BaseArticleSectionCard from './BaseArticleSectionCard';
+import stringToKey from '../../util/stringToKey';
 
 export default {
 
     components: {
         BaseArticleSectionCard
     },
+    computed: {
+        formattedSectionName() {
+            return stringToKey.convertToName(this.sectionId);
+        }
+    },
     props: {
-        sectionObj: Object
+        sectionId: String,
+        section: Object
     }
 }
 </script>

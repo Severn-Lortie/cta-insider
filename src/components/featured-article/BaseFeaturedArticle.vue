@@ -17,7 +17,9 @@
             <v-col
             class="font-weight-bold text-center white--text text-capitalize"
             :class="fontSize"
-            cols="6"
+            md="6"
+            sm="7"
+            xs="8"
             >
                 {{article.title}}
             </v-col>
@@ -29,12 +31,12 @@
 <script>
 export default {
     props: {
-        articles: Array
+        articles: Object
     },
     computed: {
         fontSize() {
             if (this.$vuetify.breakpoint.xs) {
-                return 'display-1'
+                return 'display-2'
             } else {
                 return 'display-3'
             }

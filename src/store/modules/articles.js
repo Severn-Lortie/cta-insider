@@ -2,6 +2,34 @@ import fb from '../../firebaseConfig';
 import stringToKey from '../../util/stringToKey';
 import Vue from 'vue' 
 
+/*
+Mock state
+
+the 'key' for any section will be in camel case, when dispalay stringToKey
+should convert it. I.e. courseReview --> Course Review for display
+
+state: {
+    sections: {
+        opinion: {
+            articles: {
+                cyP8VFMRUnniAEM0FCrr: {
+                    title: 'The article title',
+                    author: 'The author of the article',
+                    bodyText: 'The primary text of the article',
+                    image: 'An src/url to the image'
+                }
+                UwYDYgNdh0nbTq6uGlLv: {
+                    title: 'The article title',
+                    author: 'The author of the article',
+                    bodyText: 'The primary text of the article',
+                    image: 'An src/url to the image'
+                }
+            }
+        }
+    }
+}
+*/
+
 export default {
     namespaced: true,
     state: {
@@ -9,35 +37,22 @@ export default {
     },
     getters: {
        getAmountOfArticlesInSection: (state) => (section) => {
-           return state.sections[section].articles.length;
+           const articlesPath = state.sections[section].articles;
+           return Object.keys(articlesPath).length;
        }
     },
     mutations: {
-        addArticle(state, articleInfo) {
+        addArticle(state, doc) {
+            // add the article to the state, with its firestore ID as its key
+            const sectionId = doc.ref.parent.parent.id;
+            const articleId = doc.id;
 
-            // convertToKey is a function from stringToKey. It converts:
-            // 'Object Key' --> 'objectKey'
-            const sectionKey = stringToKey.convertToKey(articleInfo.sectionName);
-            const sectionPath = state.sections[sectionKey];
-
-            // if the section does not exist add it and the article
-            if (!sectionPath) {
-                let newSection = {
-                    name: articleInfo.sectionName,
-                    articles: []
-                }
-                articleInfo.full.id = articleInfo.id;
-                newSection.articles.push(articleInfo.full);
-                Vue.set(state.sections, sectionKey, newSection);
-            } else {
-                // check for dupe 
-                let isDupe = sectionPath.articles.some(article => article.id === articleInfo.id);
-                // Add the article and attach its ID
-                if (!isDupe) {
-                    articleInfo.full.id = articleInfo.id;
-                    state.sections[sectionKey].articles.push(articleInfo.full);
-                } 
+            const sectionTemplate = {
+                articles: {}
             }
+            sectionTemplate.articles[articleId] = doc.data();
+
+            Vue.set(state.sections, sectionId, sectionTemplate)
         },
         deleteArticle(state, path) {
             state.sections[path.section].articles.splice(path.number, 1);
@@ -45,45 +60,47 @@ export default {
     },
     actions: {
         async fetchArticlesFromDBSection({commit}, params) {
+            /*
+                (example)
+                params: {
+                    sectionId: 'opinion',
+                    limit: 3
+                }
+            */
 
-            const sectionSnapshot = await fb.sections.
-            where('name', '==', params.section)
-                .get();
+            // get the section
+            const sectionRef = fb.sections.doc(params.sectionId).collection('articles');
+            const sectionSnapshot = await sectionRef.limit(params.limit).get();
 
-            sectionSnapshot.forEach(async (doc) => {
-                const sectionName = doc.data().name;
-
-                const articleSnapshot = await doc.ref.collection('articles')
-                    .limit(params.limit)
-                    .get();
-
-                articleSnapshot.forEach((doc) => {
-                    commit('addArticle', {
-                        sectionName,
-                        full: doc.data(),
-                        id: doc.id
-                    })
-                })
+            // commit each article to the store
+            sectionSnapshot.forEach((doc) => {
+                commit('addArticle', doc);
             })
+
         },
         async fetchAllArticlesFromDB({commit}, limit) {
-            const sectionSnapshot = await fb.sections.get();
+            // create a compound query to get every article collection
+            const allArticlesRef = fb.db.collectionGroup('articles');
+            const allArticlesSnapshot = await allArticlesRef.get();
+            
+            // commit each article to the store
+            allArticlesSnapshot.forEach((doc) => {
+                commit('addArticle', doc);
+            })
 
-            sectionSnapshot.forEach(async (doc) => {
-
-                const sectionName = doc.data().name;
-
-                const articlesSnapshot = await doc.ref.collection('articles')
-                    .limit(limit)
-                    .get();
-
-                articlesSnapshot.forEach((doc) => {
-                    commit('addArticle', {
-                        sectionName,
-                        full: doc.data(),
-                        id: doc.id
-                    })
-                })
+        },
+        async fetchSingleArticleFromDB({commit}, id) {
+            // create a compound query for doc id
+            const allArticlesRef = fb.db.collectionGroup('articles');
+            const allArticlesSnapshot = await allArticlesRef.get();
+            
+            // if the ID matches the requested one, commit it to the store
+            allArticlesSnapshot.forEach((doc) => {
+                if (doc.id === id) {
+                    commit('addArticle', doc);
+                } else {
+                    console.warn(`The requested article: "${id}" could not be found`)
+                }
             })
         }
     }

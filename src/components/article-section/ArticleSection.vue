@@ -1,9 +1,10 @@
 <template>
     <div>
         <base-article-section
-        v-for="(section, key) in sections"
-        :key="key"
-        :sectionObj="{section, key}"
+        v-for="(section, sectionId) in sections"
+        :key="sectionId"
+        :section="section"
+        :sectionId="sectionId"
         ></base-article-section>
     </div>
 </template>

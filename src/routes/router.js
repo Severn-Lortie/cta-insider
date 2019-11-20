@@ -20,12 +20,12 @@ export default new Router({
             component: FrontPage
         },
         {
-            path: '/article/:section/:number',
+            path: '/article/:sectionId/:articleId',
             component: ArticlePage,
             props: true
         },
         {
-            path: '/section/:sectionPath',
+            path: '/section/:id',
             component: SectionPage,
             props: true
         },

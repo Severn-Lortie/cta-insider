@@ -5,7 +5,7 @@
         <v-list-item-content>
             <v-list-item-title 
             class="headline text-capitalize"
-            :class="{'text-wrap': prominent}"
+            :class="{'text-wrap': article.featured}"
             >
               {{article.title}}
             </v-list-item-title>
@@ -28,7 +28,7 @@
         <v-btn
             text
             color="purple darken-2"
-            :to="`/article/${section}/${articleNumberInSection}`"
+            :to="`/article/${sectionId}/${articleId}`"
         >
             Read
         </v-btn>
@@ -41,21 +41,12 @@ export default {
 
     props: {
         article: Object,
-        section: String,
-        articleNumberInSection: Number
+        articleId: String,
+        sectionId: String
     },
     computed: {
         elevation() {
-            if (this.articleNumberInSection == 1) {
-                return 16;
-            }
-            return 4;
-        },
-        prominent() {
-          if (this.articleNumberInSection == 1) {
-            return true;
-          }
-          return false;
+            return this.article.featured ? 16 : 4;
         }
     }
 }

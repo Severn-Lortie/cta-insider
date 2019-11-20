@@ -1,6 +1,6 @@
 <template>
   <base-app-toolbar
-  :sections="sections"
+  :sections="sectionIds"
   ></base-app-toolbar>
 </template>
 
@@ -15,7 +15,14 @@ export default {
     computed: {
         ...mapState('articles', {
             sections: state => state.sections
-        })
+        }),
+        sectionIds() {
+            let ids = [];
+            for (let sectionId in this.sections) {
+                ids.push(sectionId);
+            }
+            return ids;
+        }
     }
 }
 </script>

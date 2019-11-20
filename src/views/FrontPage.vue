@@ -32,9 +32,8 @@ export default {
         ])
     },
     created() {
-        if (Object.keys(this.sections).length === 0) {
-            this.fetchAllArticlesFromDB(3);
-            console.log('fetched')
+        if (Object.keys(this.sections).length < 3) {
+            this.fetchAllArticlesFromDB();
         }
     }
 }

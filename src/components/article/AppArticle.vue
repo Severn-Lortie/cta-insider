@@ -21,6 +21,7 @@
 import {
     mapState
 } from 'vuex'
+
 import BaseAppArticleBody from './BaseAppArticleBody'
 import BaseAppArticleHeader from './BaseAppArticleHeader'
 import BaseErrorAlert from '../core/BaseErrorAlert'
@@ -32,7 +33,8 @@ export default {
         }
     },
     props: {
-        articlePath: Object // section and number
+        sectionId: String,
+        articleId: String
     },
     components: {
         BaseAppArticleBody,
@@ -44,10 +46,13 @@ export default {
             sections: state => state.sections
         }),
         article() {
-            const section = this.articlePath.section;
-            const number = this.articlePath.number;
-            const article = this.sections[section].articles[number];
-            return article;
+            if (this.sections[this.sectionId]) {
+                const article = this.sections[this.sectionId].articles[this.articleId];
+                if (article) {
+                    return article;
+                }
+            }
+            return undefined;
         }
     }
 }
