@@ -1,7 +1,11 @@
 <template>
 <v-card :elevation="elevation">
     <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <v-list-item-avatar color="grey">
+            <v-img :src="article.avatarImage">
+
+            </v-img>
+        </v-list-item-avatar>
         <v-list-item-content>
             <v-list-item-title 
             class="headline text-capitalize"
