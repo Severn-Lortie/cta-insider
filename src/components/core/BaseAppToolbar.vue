@@ -67,7 +67,6 @@ export default {
     },
     computed: {
         xs() {
-            console.log(this.$vuetify.breakpoint.xs);
             return this.$vuetify.breakpoint.xs;
         }
     }

@@ -1,5 +1,4 @@
 import fb from '../../firebaseConfig';
-import stringToKey from '../../util/stringToKey';
 import Vue from 'vue' 
 
 /*
