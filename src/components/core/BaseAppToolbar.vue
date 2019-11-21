@@ -39,13 +39,17 @@
         </template>
 
         <v-list>
-            <v-subheader>SECTIONS</v-subheader>
+            <v-subheader>Sections:</v-subheader>
           <v-list-item
             v-for="id in sections"
             :key="id"
             @click="() => {}"
           >
-            <v-list-item-title>{{ id }}</v-list-item-title>
+            <v-list-item-title >
+              <v-btn text :to="`section/${id}`">
+                {{formattedName(id)}}
+              </v-btn>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

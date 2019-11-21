@@ -22,6 +22,16 @@ const currentUser = auth.currentUser
 // firebase collections
 const sections = db.collection('sections');
 
+// setup auth persistence
+const setupPersistence = async () => {
+  try {
+    await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
 export default {
     db,
     auth,
