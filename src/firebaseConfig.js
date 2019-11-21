@@ -30,6 +30,7 @@ const setupPersistence = async () => {
     console.log(err);
   }
 }
+setupPersistence();
 
 
 export default {
