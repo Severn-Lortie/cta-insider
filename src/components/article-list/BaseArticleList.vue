@@ -2,6 +2,7 @@
   <v-row
     justify="center"
     align="center"
+    class="ma-0"
 >
     <v-col
         lg="5"

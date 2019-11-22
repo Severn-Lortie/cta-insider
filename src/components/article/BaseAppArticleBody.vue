@@ -2,12 +2,13 @@
   <v-row
         justify="center"
         align="center"
-        class="fill-height white">
+        class="fill-height white ma-0">
         <v-col
             lg="6"
             md="8"
             sm="8"
-            xs="12">
+            xs="12"
+            >
             <v-sheet class="pt-12 pl-8 pr-8 pb-12 title font-weight-regular" 
             tile
             >
