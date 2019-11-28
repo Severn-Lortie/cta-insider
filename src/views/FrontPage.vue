@@ -35,6 +35,7 @@ export default {
         if (Object.keys(this.sections).length < 3) {
             this.fetchAllArticlesFromDB();
         }
+        
     }
 }
 </script>

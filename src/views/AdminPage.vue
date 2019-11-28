@@ -3,7 +3,9 @@
 </template>
 
 <script>
-import AdminArticleList from '../components/adim-article-list/AdminArticleList'
+import AdminArticleList from '../components/adim-article-list/AdminArticleList';
+
+import {mapActions} from 'vuex';
 
 export default {
     components: {

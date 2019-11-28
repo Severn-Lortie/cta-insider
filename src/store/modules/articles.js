@@ -49,9 +49,16 @@ export default {
             const sectionTemplate = {
                 articles: {}
             }
+            
+            // add all the articles first
+            if (state.sections[sectionId]) {
+                sectionTemplate.articles = state.sections[sectionId].articles;
+            }
+            
+            // add this article
             sectionTemplate.articles[articleId] = doc.data();
 
-            Vue.set(state.sections, sectionId, sectionTemplate)
+            Vue.set(state.sections, sectionId, sectionTemplate);
         },
         deleteArticle(state, path) {
             state.sections[path.section].articles.splice(path.number, 1);
@@ -101,6 +108,38 @@ export default {
                     console.warn(`The requested article: "${id}" could not be found`)
                 }
             })
+        },
+        // setter for ADMIN panel
+        async setNewArticle(context, articleInfo) {
+            /*
+                Parameters
+                article = {
+                    title,
+                    author,
+                    bodyText,
+                    image,
+                    avatarImage,
+                    sectionId --> to be seperated out
+                }
+            */
+
+            // seperate out the sectionId from the actual article
+            const {sectionId, ...article} = articleInfo;
+
+            // get the reference to the section
+            const sectionRef = fb.sections.doc(sectionId);
+            const sectionSnapshot = await sectionRef.get();
+
+            // if the section is already in the db write to it
+            if (sectionSnapshot.exists) {
+                await sectionRef.collection('articles').doc().set(article);
+
+            // create the section if it does not exist, then add the article
+            } else {
+                await fb.sections.doc(sectionId).set({});
+                await sectionRef.collection('articles').doc().set(article);
+            }
+
         }
     }
 }
