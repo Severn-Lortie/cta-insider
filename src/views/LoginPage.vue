@@ -71,7 +71,7 @@ export default {
     methods: {
         async authorize() {
             try {
-                fb.auth.signInWithEmailAndPassword(this.email, this.password);
+                await fb.auth.signInWithEmailAndPassword(this.email, this.password);
                 this.$router.push('/admin');
             } catch(e) {
                 console.log(e);
