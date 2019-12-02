@@ -23,22 +23,43 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <v-text-field label="Title" v-model="article.title"></v-text-field>
+                        <v-text-field
+                            label="Title"
+                            v-model="article.title"
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field label="Author" v-model="article.author"></v-text-field>
+                        <v-text-field
+                            label="Author"
+                            v-model="article.author"
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field label="Image" v-model="article.image"></v-text-field>
+                        <v-text-field
+                            label="Image"
+                            v-model="article.image"
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field label="Avatar Image" v-model="article.avatarImage"></v-text-field>
+                        <v-text-field
+                            label="Avatar Image"
+                            v-model="article.avatarImage"
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field label="Section" hint="i.e. 'courseReview'" v-model="article.sectionId"></v-text-field>
+                        <v-text-field
+                            label="Section"
+                            hint="i.e. 'courseReview'"
+                            v-model="article.sectionId"
+                        ></v-text-field>
                     </v-col>
-                    <v-img v-if="article.image" :src="article.image" max-height="200" width="auto"></v-img>
-                     <v-col cols="12">
+                    <v-img
+                        v-if="article.image"
+                        :src="article.image"
+                        max-height="200"
+                        width="auto"
+                    ></v-img>
+                    <v-col cols="12">
                         <v-textarea
                             filled
                             label="Body Text"
@@ -74,7 +95,9 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {
+    mapActions
+} from 'vuex';
 
 export default {
     data() {
@@ -91,12 +114,19 @@ export default {
         }
     },
     methods: {
-        ...mapActions('articles', ['setNewArticle']),
-        
+        ...mapActions('articles',
+            [
+                'setNewArticle',
+            ]
+        ),
+
         createArticle() {
             // dispatch FB set action, instantly writes article
             this.setNewArticle(this.article);
-            
+
+            // refresh 
+            this.$router.go();
+
             // close the dialog
             this.dialog = false;
         }

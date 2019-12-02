@@ -18,7 +18,7 @@
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-select
-                            :items="sectionInfo.list"
+                            :items="sectionItems"
                             v-on:change="selected"
                             label="Select a section"
                             class="mt-2"
@@ -31,11 +31,11 @@
                 </v-toolbar>
                 <v-list
                     two-line
-                    v-if="sectionInfo.section"
+                    v-if="currentSectionId !== ''"
                 >
                     <v-list-item
-                        v-for="(article, i) in sectionInfo.section.articles"
-                        :key="i"
+                        v-for="(article, id) in currentSection.articles"
+                        :key="id"
                     >
                         <v-list-item-avatar>
                             <img :src="article.image">
@@ -49,7 +49,7 @@
                         <v-list-item-action>
                             <v-btn
                                 icon
-                                @click="remove(i)"
+                                @click="remove(id)"
                             >
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
@@ -67,24 +67,45 @@
 </template>
 
 <script>
-import BaseAdminCreateDialog from './BaseAdminCreateDialog'
+import stringToKey from '../../util/stringToKey';
+import BaseAdminCreateDialog from './BaseAdminCreateDialog';
 
 export default {
+    data() {
+        return {
+            currentSectionId: ''
+        }
+    },
     props: {
-        sectionInfo: Object, // list, key, and full object
+        sections: Object, // list, key, and full object
     },
     components: {
         BaseAdminCreateDialog
     },
+    computed: {
+        sectionItems () {
+            let sectionKeysAndValues = [];
+            Object.keys(this.sections).forEach((key) => {
+                sectionKeysAndValues.push({
+                    text: stringToKey.convertToName(key),
+                    value: key
+                })
+            });
+            return sectionKeysAndValues;
+        },
+        currentSection() {
+            return this.sections[this.currentSectionId];
+        }
+    },
     methods: {
-        remove(index) {
-            this.$emit('remove', index)
+        remove(id) {
+            this.$emit('remove', id)
         },
         showEdit() {
             this.$emit('show-edit')
         },
         selected(section) {
-            this.$emit('section-select', section.value)
+            this.currentSectionId = section.value;
         }
     }
 

@@ -1,8 +1,7 @@
 <template>
 <div>
     <base-admin-article-list
-    :sectionInfo="{key: currentSectionKey, section, list: sectionList}"
-    v-on:section-select="changeSection"
+    :sections="sections"
     v-on:remove="removeArticle"
     ></base-admin-article-list>
 </div>
@@ -10,16 +9,11 @@
 
 <script>
 import {mapState} from 'vuex';
-import {mapMutations} from 'vuex';
+import {mapActions} from 'vuex';
 
 import BaseAdminArticleList from './BaseAdminArticleList';
 
 export default {
-    data() {
-        return {
-           currentSectionKey: '',
-        }
-    },
     components: {
         BaseAdminArticleList
     },
@@ -27,35 +21,20 @@ export default {
         ...mapState('articles', {
             sections: state => state.sections
         }),
-        section() {
-            return this.sections[this.currentSectionKey];
-        },
-        sectionList() {
-            let sectionList = [];
-            for (let sectionName in this.sections) {
-                let sectionNameAndKey = {
-                    text: this.sections[sectionName].name,
-                    value: sectionName
-                }
-                sectionList.push(sectionNameAndKey);
-            }
-            return sectionList;
-        }
     },
     methods: {
-        ...mapMutations('articles', [
-            'deleteArticle'
+        ...mapActions('articles', [
+            'deleteArticleWithId',
+            'fetchAllArticlesFromDB'
         ]),
 
-        removeArticle(articleIndex) {
-            this.deleteArticle({
-                section: this.currentSectionKey,
-                number: articleIndex
-            })
+        removeArticle(id) {
+            this.deleteArticleWithId(id);
+            this.$router.go();
         },
-        changeSection(newSectionKey) {
-            this.currentSectionKey = newSectionKey;
-        }
+    },
+    created() {
+        this.fetchAllArticlesFromDB();
     }
 
 }

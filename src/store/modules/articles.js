@@ -59,9 +59,6 @@ export default {
             sectionTemplate.articles[articleId] = doc.data();
 
             Vue.set(state.sections, sectionId, sectionTemplate);
-        },
-        deleteArticle(state, path) {
-            state.sections[path.section].articles.splice(path.number, 1);
         }
     },
     actions: {
@@ -139,7 +136,18 @@ export default {
                 await fb.sections.doc(sectionId).set({});
                 await sectionRef.collection('articles').doc().set(article);
             }
-
+        },
+        async deleteArticleWithId(context, id) {
+            // create a compound query to get every article collection
+            const allArticlesRef = fb.db.collectionGroup('articles');
+            const allArticlesSnapshot = await allArticlesRef.get();
+            
+            // delete the article when its found
+            allArticlesSnapshot.forEach( async (doc) => {
+               if (doc.id === id) {
+                   await doc.ref.delete();
+               }
+            })
         }
     }
 }

@@ -25,7 +25,7 @@
     ></v-img>
 
     <v-card-text class="text-truncate">
-        {{article.bodyText}}
+        <vue-markdown>{{article.bodyText}}</vue-markdown>
     </v-card-text>
 
     <v-card-actions>
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown';
+
 export default {
 
     props: {
@@ -52,6 +54,9 @@ export default {
         elevation() {
             return this.article.featured ? 16 : 4;
         }
+    },
+    components: {
+        VueMarkdown
     }
 }
 </script>

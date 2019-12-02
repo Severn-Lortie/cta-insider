@@ -8,17 +8,14 @@
 <script>
 import FeaturedArticle from '../components/featured-article/FeaturedArticle';
 import ArticleSection from '../components/article-section/ArticleSection'
-import {
-    mapActions
-} from 'vuex';
-import {
-    mapState
-} from 'vuex'
+
+import {mapActions} from 'vuex';
+import {mapState} from 'vuex'
 
 export default {
     components: {
         FeaturedArticle,
-        ArticleSection
+        ArticleSection,
     },
     computed: {
         ...mapState('articles', {
@@ -35,7 +32,6 @@ export default {
         if (Object.keys(this.sections).length < 3) {
             this.fetchAllArticlesFromDB();
         }
-        
     }
 }
 </script>
