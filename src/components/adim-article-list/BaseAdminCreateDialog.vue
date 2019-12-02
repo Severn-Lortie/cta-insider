@@ -125,7 +125,7 @@ export default {
             this.setNewArticle(this.article);
 
             // refresh 
-            this.$router.go();
+            //this.$router.go();
 
             // close the dialog
             this.dialog = false;
