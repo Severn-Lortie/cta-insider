@@ -24,8 +24,8 @@
         height="194"
     ></v-img>
 
-    <v-card-text class="text-truncate">
-        <vue-markdown>{{article.bodyText}}</vue-markdown>
+    <v-card-text>
+        <vue-markdown class="fix-text">{{article.bodyText.substring(0, 100).trimRight()}}...</vue-markdown>
     </v-card-text>
 
     <v-card-actions>
@@ -61,5 +61,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* remove default paddings for certain elements */
+.v-application p {
+    margin-bottom: 0px !important;
+}
 </style>
