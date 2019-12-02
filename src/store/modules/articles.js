@@ -130,13 +130,11 @@ export default {
             // if the section is already in the db write to it
             if (sectionSnapshot.exists) {
                 await sectionRef.collection('articles').doc().set(article);
-                console.log('already exists');
 
             // create the section if it does not exist, then add the article
             } else {
                 await fb.sections.doc(sectionId).set({});
                 await sectionRef.collection('articles').doc().set(article);
-                console.log('does not already exist');
             }
         },
         async deleteArticleWithId(context, id) {
