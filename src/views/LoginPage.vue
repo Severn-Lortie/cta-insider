@@ -74,7 +74,7 @@ export default {
                 await fb.auth.signInWithEmailAndPassword(this.email, this.password);
                 this.$router.push('/admin');
             } catch(e) {
-                console.log(e);
+                console.log(e); //eslint-disable-line
             }
         }
     }

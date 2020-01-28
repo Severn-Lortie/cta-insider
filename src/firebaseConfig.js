@@ -27,7 +27,7 @@ const setupPersistence = async () => {
   try {
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
   } catch (err) {
-    console.log(err);
+    console.log(err); //eslint-disable-line
   }
 }
 setupPersistence();

@@ -81,7 +81,7 @@ export default {
             })
 
         },
-        async fetchAllArticlesFromDB({commit}, limit) {
+        async fetchAllArticlesFromDB({commit}) {
             // create a compound query to get every article collection
             const allArticlesRef = fb.db.collectionGroup('articles');
             const allArticlesSnapshot = await allArticlesRef.get();
@@ -102,7 +102,7 @@ export default {
                 if (doc.id === id) {
                     commit('addArticle', doc);
                 } else {
-                    console.warn(`The requested article: "${id}" could not be found`)
+                    console.warn(`The requested article: "${id}" could not be found`) //eslint-disable-line
                 }
             })
         },

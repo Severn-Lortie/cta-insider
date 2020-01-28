@@ -9,7 +9,6 @@
 
 <script>
 import {mapState} from 'vuex'
-import stringToKey from '../../util/stringToKey'
 import BaseArticleList from './BaseArticleList'
 import BaseArticleListLoadButton from './BaseArticleListLoadButton';
 
