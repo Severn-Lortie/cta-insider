@@ -4,22 +4,24 @@
     hide-delimiters
     :show-arrows="false"
     forward-transition="slide-x-transition"
-    reverse-transition="slide-x-transition">
+    reverse-transition="slide-x-transition"
+>
     <v-carousel-item
         v-for="(article, i) in articles"
         :key="i"
         :src="article.image"
-        >
+    >
         <v-row
             class="fill-height fade"
             align="center"
-            justify="center">
+            justify="center"
+        >
             <v-col
-            class="font-weight-bold text-center white--text text-capitalize"
-            :class="fontSize"
-            md="6"
-            sm="7"
-            xs="8"
+                class="font-weight-bold text-center white--text text-capitalize"
+                :class="fontSize"
+                md="6"
+                sm="7"
+                xs="8"
             >
                 {{article.title}}
             </v-col>

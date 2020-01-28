@@ -69,6 +69,7 @@
                     </v-col>
                 </v-row>
             </v-container>
+            <vue-markdown :source="article.bodyText" class="ml-3"></vue-markdown>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -95,9 +96,8 @@
 </template>
 
 <script>
-import {
-    mapActions
-} from 'vuex';
+import {mapActions} from 'vuex';
+import VueMarkdown from 'vue-markdown'
 
 export default {
     data() {
@@ -112,6 +112,9 @@ export default {
                 sectionId: ''
             }
         }
+    },
+    components: {
+         VueMarkdown
     },
     methods: {
         ...mapActions('articles',

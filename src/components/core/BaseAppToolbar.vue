@@ -29,30 +29,37 @@
     </div>
     <div v-else>
         <v-menu
-        left
-        bottom
-      >
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-format-list-bulleted-square</v-icon>
-          </v-btn>
-        </template>
+            left
+            bottom
+        >
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    icon
+                    v-on="on"
+                >
+                    <v-icon>mdi-format-list-bulleted-square</v-icon>
+                </v-btn>
+            </template>
 
-        <v-list>
-            <v-subheader>Sections:</v-subheader>
-          <v-list-item
-            v-for="id in sections"
-            :key="id"
-            @click="() => {}"
-          >
-            <v-list-item-title >
-              <v-btn text :to="`section/${id}`">
-                {{formattedName(id)}}
-              </v-btn>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+            <v-list>
+                <v-subheader>Sections:</v-subheader>
+                <v-list-item
+                    v-for="id in sections"
+                    :key="id"
+                    @click="() => {}"
+                >
+                    <v-list-item-title>
+                        <v-btn
+                            text
+                            replace
+                            :to="`section/${id}`"
+                        >
+                            {{formattedName(id)}}
+                        </v-btn>
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
     </div>
 </v-app-bar>
 </template>

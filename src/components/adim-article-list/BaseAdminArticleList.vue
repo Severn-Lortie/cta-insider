@@ -83,7 +83,7 @@ export default {
         BaseAdminCreateDialog
     },
     computed: {
-        sectionItems () {
+        sectionItems() {
             let sectionKeysAndValues = [];
             Object.keys(this.sections).forEach((key) => {
                 sectionKeysAndValues.push({

@@ -20,6 +20,7 @@ export default {
                 let currentSection = this.sections[sectionKey];
                 for (let articleKey in currentSection.articles) {
                     let currentArticle = currentSection.articles[articleKey];
+                    currentArticle.id = articleKey;
                     allNewArticles[articleKey] = currentArticle;
                 }
             }
