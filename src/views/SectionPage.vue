@@ -1,5 +1,10 @@
 <template>
-<article-list :sectionId="id" v-on:fetch-next-articles="fetchNextArticles()"></article-list>
+<article-list 
+v-if="sections[id]"
+:sectionId="id" 
+v-on:fetch-next-articles="fetchNextArticles()"
+>
+</article-list>
 </template>
 
 <script>
@@ -11,6 +16,9 @@ import {mapState} from 'vuex'
 export default {
     components: {
         ArticleList
+    },
+    props: {
+        id: String
     },
     computed: {
         ...mapGetters('articles', [
@@ -31,25 +39,19 @@ export default {
             });
         }
     },
-    props: {
-        id: String
-    },
     created() {
+
         const params = {
             sectionId: this.id,
             limit: 3
         }
+
+        // fetch articles if the section is not yet initialized in the store
         if (!this.sections[this.id]) {
             this.fetchArticlesFromDBSection(params);
-        } else if (this.getAmountOfArticlesInSection(this.id) < 3) {
+        } else if (this.getAmountOfArticlesInSection(this.id) < params.limit) {
              this.fetchArticlesFromDBSection(params);
-        } else {
-            console.warn(`Section ${this.id} is not valid`);
-        }
+        } 
     }
 }
 </script>
-
-<style>
-
-</style>

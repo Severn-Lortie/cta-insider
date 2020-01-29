@@ -1,14 +1,14 @@
 <template>
 <app-article 
-:sectionId="sectionId"
-:articleId="articleId"
+v-if="article"
+:article="article"
 ></app-article>
 </template>
 
 <script>
 import AppArticle from '../components/article/AppArticle'
-import {mapState} from 'vuex'
 import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
     props: {
@@ -21,15 +21,22 @@ export default {
         ])
     },
     computed: {
-        ...mapState('articles', {
-            sections: state => state.sections
-        })
+        ...mapGetters('articles', [
+            'getArticle'
+        ]),
+        article() {
+            return this.getArticle({
+                sectionId: this.sectionId,
+                articleId: this.articleId
+            })
+        }
     },
     components: {
         AppArticle
     },
     created() {
-        if (!this.sections[this.sectionId]) {
+        // Get the article if it is not already loaded into the state
+        if (!this.article) {
             this.fetchSingleArticleFromDB(this.articleId);
         }
     }

@@ -1,5 +1,5 @@
 import fb from '../../firebaseConfig';
-import Vue from 'vue' 
+import Vue from 'vue'
 
 /*
 Mock state
@@ -35,10 +35,25 @@ export default {
         sections: {}
     },
     getters: {
-       getAmountOfArticlesInSection: (state) => (section) => {
-           const articlesPath = state.sections[section].articles;
-           return Object.keys(articlesPath).length;
-       }
+        getAmountOfArticlesInSection: (state) => (section) => {
+            const articlesPath = state.sections[section].articles;
+            return Object.keys(articlesPath).length;
+        },
+        getArticle: (state) => (params) => {
+
+            /*
+            {
+                sectionId,
+                articleId
+            }
+            */
+
+            if (state.sections[params.sectionId]) {
+                if (state.sections[params.sectionId].articles[params.articleId]) {
+                    return state.sections[params.sectionId].articles[params.articleId];
+                }
+            }
+        }
     },
     mutations: {
         addArticle(state, doc) {
@@ -49,12 +64,12 @@ export default {
             const sectionTemplate = {
                 articles: {}
             }
-            
+
             // add all the articles first
             if (state.sections[sectionId]) {
                 sectionTemplate.articles = state.sections[sectionId].articles;
             }
-            
+
             // add this article
             sectionTemplate.articles[articleId] = doc.data();
 
@@ -62,7 +77,9 @@ export default {
         }
     },
     actions: {
-        async fetchArticlesFromDBSection({commit}, params) {
+        async fetchArticlesFromDBSection({
+            commit
+        }, params) {
             /*
                 (example)
                 params: {
@@ -80,23 +97,30 @@ export default {
                 commit('addArticle', doc);
             })
 
+            // return the promise for error handeling
+            return sectionSnapshot;
+
         },
-        async fetchAllArticlesFromDB({commit}) {
+        async fetchAllArticlesFromDB({
+            commit
+        }) {
             // create a compound query to get every article collection
             const allArticlesRef = fb.db.collectionGroup('articles');
             const allArticlesSnapshot = await allArticlesRef.get();
-            
+
             // commit each article to the store
             allArticlesSnapshot.forEach((doc) => {
                 commit('addArticle', doc);
             })
 
         },
-        async fetchSingleArticleFromDB({commit}, id) {
+        async fetchSingleArticleFromDB({
+            commit
+        }, id) {
             // create a compound query for doc id
             const allArticlesRef = fb.db.collectionGroup('articles');
             const allArticlesSnapshot = await allArticlesRef.get();
-            
+
             // if the ID matches the requested one, commit it to the store
             allArticlesSnapshot.forEach((doc) => {
                 if (doc.id === id) {
@@ -105,6 +129,7 @@ export default {
                     console.warn(`The requested article: "${id}" could not be found`) //eslint-disable-line
                 }
             })
+            return allArticlesSnapshot; // return the promise for error handeling
         },
         // setter for ADMIN panel
         async setNewArticle(context, articleInfo) {
@@ -121,7 +146,10 @@ export default {
             */
 
             // seperate out the sectionId from the actual article
-            const {sectionId, ...article} = articleInfo;
+            const {
+                sectionId,
+                ...article
+            } = articleInfo;
 
             // get the reference to the section
             const sectionRef = fb.sections.doc(sectionId);
@@ -131,7 +159,7 @@ export default {
             if (sectionSnapshot.exists) {
                 await sectionRef.collection('articles').doc().set(article);
 
-            // create the section if it does not exist, then add the article
+                // create the section if it does not exist, then add the article
             } else {
                 await fb.sections.doc(sectionId).set({});
                 await sectionRef.collection('articles').doc().set(article);
@@ -141,12 +169,12 @@ export default {
             // create a compound query to get every article collection
             const allArticlesRef = fb.db.collectionGroup('articles');
             const allArticlesSnapshot = await allArticlesRef.get();
-            
+
             // delete the article when its found
-            allArticlesSnapshot.forEach( async (doc) => {
-               if (doc.id === id) {
-                   await doc.ref.delete();
-               }
+            allArticlesSnapshot.forEach(async (doc) => {
+                if (doc.id === id) {
+                    await doc.ref.delete();
+                }
             })
         }
     }

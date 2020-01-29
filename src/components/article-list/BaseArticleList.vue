@@ -9,7 +9,6 @@
         md="6"
         sm="8"
         xs="12"
-        v-if="section"
         class="no-pad"
     >
         <v-list
@@ -31,26 +30,15 @@
             <slot></slot>
         </div>
     </v-col>
-    <v-col v-else>
-        <base-error-alert :errorMessage="message">
-        </base-error-alert>
-    </v-col>
 </v-row>
 </template>
 
 <script>
 import BaseArticleSectionCard from '../article-section/BaseArticleSectionCard'
-import BaseErrorAlert from '../core/BaseErrorAlert';
 
 export default {
     components: {
-        BaseArticleSectionCard,
-        BaseErrorAlert
-    },
-    data() {
-        return {
-            message: "Uh oh, this section does not exist."
-        }
+        BaseArticleSectionCard
     },
     props: {
         section: Object,
@@ -58,7 +46,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>
